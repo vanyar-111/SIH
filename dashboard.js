@@ -249,11 +249,54 @@ export default function MicroplasticsDashboard({
         letterSpacing: 1.6,
         fontSize: 12,
     }
+    // logout handler (works even if firebase didn't load)
+    function handleLogout() {
+        try {
+            if (window.firebase?.auth) {
+                window.firebase
+                    .auth()
+                    .signOut()
+                    .finally(() => {
+                        window.location.href = "/" // your login page route
+                    })
+            } else {
+                window.location.href = "/"
+            }
+        } catch {
+            window.location.href = "/"
+        }
+    }
 
     return (
         <div style={page}>
-            <h2 style={{ marginBottom: 16 }}>Microplastics Dashboard</h2>
+            {/* Header bar with title + Logout */}
+            <div
+                style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    marginBottom: 16,
+                }}
+            >
+                <h2 style={{ margin: 0 }}>Microplastics Dashboard</h2>
 
+                <button
+                    onClick={handleLogout}
+                    style={{
+                        padding: "8px 14px",
+                        borderRadius: 10,
+                        border: `1px solid ${COLORS.grid}`,
+                        background: "#ff4d4d",
+                        color: "white",
+                        fontWeight: 700,
+                        cursor: "pointer",
+                        boxShadow: "0 2px 6px rgba(0,0,0,0.25)",
+                    }}
+                    title="Sign out and return to login"
+                >
+                    Logout
+                </button>
+            </div>
             {/* KPI Row */}
             <div
                 style={{
